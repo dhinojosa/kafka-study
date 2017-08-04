@@ -19,9 +19,12 @@ public class Streaming {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         Properties props = new Properties();
         props.put(StreamsConfig.APPLICATION_ID_CONFIG, "californiafilter");
-        props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "kaf0:9092,kaf1:9092,kaf2:9092");
-        props.put(StreamsConfig.KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
-        props.put(StreamsConfig.VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
+        props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG,
+                "kaf0:9092,kaf1:9092,kaf2:9092");
+        props.put(StreamsConfig.KEY_SERDE_CLASS_CONFIG,
+                Serdes.String().getClass().getName());
+        props.put(StreamsConfig.VALUE_SERDE_CLASS_CONFIG,
+                Serdes.String().getClass().getName());
 
         Thread mainThread = Thread.currentThread();
 

@@ -20,7 +20,8 @@ public class StandardConsumerFromBeginning {
         properties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         properties.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(properties);
-        consumer.subscribe(Collections.singletonList("scaled-california-cities"),
+
+        consumer.subscribe(Collections.singletonList("scaled-cities"),
                 new ConsumerRebalanceListener() {
             @Override
             public void onPartitionsRevoked(Collection<TopicPartition> partitions) {
@@ -33,9 +34,12 @@ public class StandardConsumerFromBeginning {
                 consumer.seekToBeginning(partitions);
             }
         });
+
+
         try {
             while (true) {
                 ConsumerRecords<String, String> records = consumer.poll(5);
+                if (!records.isEmpty()) System.out.println("New Poll");
                 for (ConsumerRecord<String, String> record : records) {
                     System.out.format("checksum: %d\n", record.checksum());
                     System.out.format("offset: %d\n", record.offset());

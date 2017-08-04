@@ -20,7 +20,7 @@ public class StandardProducer {
                 "org.apache.kafka.common.serialization.StringSerializer");
         KafkaProducer<String, String> producer = new KafkaProducer<>(properties);
         ProducerRecord<String, String> producerRecord =
-                new ProducerRecord<>("scaled-cities", "Baton Rouge, LA");
+                new ProducerRecord<>("scaled-cities", "Midland, TX");
         Future<RecordMetadata> future = producer.send(producerRecord);
         producer.flush();
         RecordMetadata recordMetadata = future.get();  //blocks

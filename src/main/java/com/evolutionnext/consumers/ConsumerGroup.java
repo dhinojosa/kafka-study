@@ -9,19 +9,20 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class ConsumerGroup {
+
+
     public static void main(String[] args) {
-        int numConsumers = 3;
-        //String groupId = "consumerGroup1";
-        if (args.length != 2) System.err.println("Usage ConsumerGroup <groupId> <topic>");
+        if (args.length != 3) System.err.println("Usage ConsumerGroup <groupId> <topic> <numberConsumers>");
         String groupId = args[0];
         String topic = args[1];
-        System.out.println(groupId);
-        System.out.println(topic);
+        int numberConsumers = Integer.parseInt(args[2]);
+        System.out.format("Starting consumer group named %s on topic %s with %d number of threads/consumers",
+                groupId, topic, numberConsumers);
         List<String> topics = Collections.singletonList(topic);
-        ExecutorService executor = Executors.newFixedThreadPool(numConsumers);
+        ExecutorService executor = Executors.newFixedThreadPool(numberConsumers);
 
         final List<ConsumerLoop> consumers = new ArrayList<>();
-        for (int i = 0; i < numConsumers; i++) {
+        for (int i = 0; i < numberConsumers; i++) {
             ConsumerLoop consumer = new ConsumerLoop(i, groupId, topics);
             consumers.add(consumer);
             executor.submit(consumer);

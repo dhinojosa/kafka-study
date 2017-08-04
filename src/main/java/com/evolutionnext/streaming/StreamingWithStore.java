@@ -23,7 +23,8 @@ public class StreamingWithStore {
         KStream<String, String> stream = builder.stream("scaled-cities");
 
         stream.groupBy((key, value) -> value.split(",")[1],Serdes.String(), Serdes.String())
-              .count("StateCount").to(Serdes.String(), Serdes.Long(), "state-group");
+              .count("StateCount")
+              .to(Serdes.String(), Serdes.Long(), "state-group");
 
         KafkaStreams streams = new KafkaStreams(builder, props);
 

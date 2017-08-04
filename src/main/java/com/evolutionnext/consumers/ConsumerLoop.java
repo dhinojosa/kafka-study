@@ -1,11 +1,15 @@
 package com.evolutionnext.consumers;
 
+import org.apache.kafka.clients.consumer.ConsumerRebalanceListener;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.errors.WakeupException;
 import org.apache.kafka.common.serialization.StringDeserializer;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
@@ -31,7 +35,18 @@ public class ConsumerLoop implements Runnable {
     @Override
     public void run() {
         try {
-            consumer.subscribe(topics);
+            consumer.subscribe(topics, new ConsumerRebalanceListener() {
+                @Override
+                public void onPartitionsRevoked(Collection<TopicPartition> partitions) {
+                    System.out.println("Partitions " + partitions + " revoked");
+                }
+
+                @Override
+                public void onPartitionsAssigned(Collection<TopicPartition> partitions) {
+                    System.out.println("Partitions " + partitions + " assigned");
+                }
+            });
+
             while (true) {
                 ConsumerRecords<String, String> records = consumer.poll(5);
                 for (ConsumerRecord<String, String> record : records) {
