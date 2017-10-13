@@ -13,13 +13,15 @@ public class StandardConsumer {
     public static void main(String[] args) {
         Properties properties = new Properties();
         properties.put("bootstrap.servers", "kaf0:9092, kaf1:9092");
-        properties.put("group.id", "denverites_extreme");
+        properties.put("group.id", "group40");
         properties.put("key.deserializer",
                 "org.apache.kafka.common.serialization.StringDeserializer");
         properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
                 "org.apache.kafka.common.serialization.StringDeserializer");
+        properties.put("enable.auto.commit", true);
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(properties);
         consumer.subscribe(Collections.singletonList("scaled-cities"));
+
         try {
             while (true) {
                 ConsumerRecords<String, String> records = consumer.poll(5);

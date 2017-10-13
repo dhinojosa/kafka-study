@@ -28,6 +28,7 @@ public class ConsumerLoop implements Runnable {
         props.put("group.id", groupId);
         props.put("key.deserializer", StringDeserializer.class.getName());
         props.put("value.deserializer", StringDeserializer.class.getName());
+        props.put("enable.auto.commit", true);
         this.consumer = new KafkaConsumer<>(props);
     }
 

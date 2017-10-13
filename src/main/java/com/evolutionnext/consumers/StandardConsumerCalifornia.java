@@ -1,45 +1,29 @@
 package com.evolutionnext.consumers;
 
-import org.apache.kafka.clients.consumer.ConsumerRebalanceListener;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.common.TopicPartition;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Properties;
 
-public class StandardConsumerFromBeginning {
+public class StandardConsumerCalifornia {
 
     public static void main(String[] args) {
         Properties properties = new Properties();
         properties.put("bootstrap.servers", "kaf0:9092, kaf1:9092");
-        properties.put("group.id", "fromBeginningGroup");
-        properties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-        properties.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        properties.put("group.id", "cal-consume");
+        properties.put("key.deserializer",
+                "org.apache.kafka.common.serialization.StringDeserializer");
+        properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
+                "org.apache.kafka.common.serialization.StringDeserializer");
         properties.put("enable.auto.commit", true);
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(properties);
-
-        consumer.subscribe(Collections.singletonList("scaled-cities"),
-                new ConsumerRebalanceListener() {
-            @Override
-            public void onPartitionsRevoked(Collection<TopicPartition> partitions) {
-                System.out.println("Partitions " + partitions + " revoked");
-            }
-
-            @Override
-            public void onPartitionsAssigned(Collection<TopicPartition> partitions) {
-                System.out.println("Partitions " + partitions + " assigned");
-                consumer.seekToBeginning(partitions);
-            }
-        });
-
+        consumer.subscribe(Collections.singletonList("state-california-cities"));
         try {
             while (true) {
                 ConsumerRecords<String, String> records = consumer.poll(5);
-                if (!records.isEmpty()) System.out.println("New Poll");
                 for (ConsumerRecord<String, String> record : records) {
                     System.out.format("checksum: %d\n", record.checksum());
                     System.out.format("offset: %d\n", record.offset());

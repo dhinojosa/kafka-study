@@ -8,6 +8,7 @@ import org.apache.kafka.common.errors.WakeupException;
 import java.util.Collections;
 import java.util.Properties;
 
+
 public class StateGroupConsumer {
     public static void main(String[] args) {
         Properties properties = new Properties();
@@ -15,6 +16,7 @@ public class StateGroupConsumer {
         properties.put("group.id", "testGroup4");
         properties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         properties.put("value.deserializer", "org.apache.kafka.common.serialization.LongDeserializer");
+        properties.put("enable.auto.commit", true);
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(properties);
 
         Thread mainThread = Thread.currentThread();

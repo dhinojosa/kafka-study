@@ -19,7 +19,6 @@ public class StandardConsumerFromSpecificOffset {
         properties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         properties.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(properties);
-
         consumer.subscribe(Collections.singletonList("scaled-cities"), new ConsumerRebalanceListener() {
             @Override
             public void onPartitionsRevoked(Collection<TopicPartition> partitions) {
@@ -29,6 +28,7 @@ public class StandardConsumerFromSpecificOffset {
             @Override
             public void onPartitionsAssigned(Collection<TopicPartition> partitions) {
                 System.out.println("Partitions " + partitions + " assigned");
+                //consumer.seek();
             }
         });
         try {

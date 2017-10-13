@@ -19,7 +19,7 @@ public class StandardProducerAck {
 
         KafkaProducer<String, String> producer = new KafkaProducer<>(properties);
         ProducerRecord<String, String> producerRecord =
-                new ProducerRecord<>("scaled-cities", "Springfield, ID");
+                new ProducerRecord<>("scaled-cities", "Worcester, MA");
         Future<RecordMetadata> future = producer.send(producerRecord);
         producer.flush();
         RecordMetadata recordMetadata = future.get();
